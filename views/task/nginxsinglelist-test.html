@@ -1,0 +1,104 @@
+<div class="row">
+<div class="span12">      		
+	   		
+	<div class="widget ">
+		<div class="widget-header">
+			<i class="icon-plus"></i>
+ 			<h3>nginxsinglelist</h3>
+		</div> <!-- /widget-header -->
+
+		<div class="widget-content">
+		
+		<div class="alert alert-danger hide" role="alert"></div>
+
+		<h3>{{.task.TaskName}}</h3>
+		任务ID：#{{.task.Id}} <br />
+		主机名：{{.task.Description}} <br />
+		执行命令：{{.task.Command}} <br />
+
+			<input type="hidden" name="id" value="{{.task.Id}}" />
+		
+				
+				<div class="control-group">											
+					<label class="control-label" for="task_name">任务名称</label>
+					<div class="controls">
+						<input type="text" name="task_name" value="{{.task.TaskName}}" class="span6" id="task_name">
+					</div>				
+				</div>
+				
+				<div class="control-group">											
+					<label class="control-label" for="description">主机名</label>
+					<div class="controls">
+						<textarea name="description" class="span6" id="description" rows="3">{{.task.Description}}</textarea>
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+				
+				
+				<div class="control-group">											
+					<label class="control-label" for="timeout">超时设置</label>
+					<div class="controls">
+						<input type="text" name="timeout" class="span1" id="timeout" value="{{.task.Timeout}}"> 秒
+						<span class="help-block">不设置的话，默认超时时间为1天</span>
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+				
+				<div class="control-group">											
+					<label class="control-label">邮件通知</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input type="radio" value="0" name="notify" {{if eq .task.Notify 0}}checked{{end}}> 不通知
+						</label>
+						<label class="radio inline">
+							<input type="radio" value="1" name="notify" {{if eq .task.Notify 1}}checked{{end}}> 执行失败时通知
+						</label>
+						<label class="radio inline">
+							<input type="radio" value="2" name="notify" {{if eq .task.Notify 2}}checked{{end}}> 执行结束时通知
+						</label>
+					</div>	<!-- /controls -->			
+				</div> <!-- /control-group -->
+				
+				<div class="control-group notify_email {{if eq .task.Notify 0}}hide{{end}}">											
+					<label class="control-label" for="notify_email">通知邮件抄送人</label>
+					<div class="controls">
+						<textarea name="notify_email" class="span6" id="notify_email" rows="6">{{.task.NotifyEmail}}</textarea>
+						<p class="help-block">每行一个email地址，如果不需要抄送给其他人请留空</p>
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+		
+				<br />
+				
+					
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">保 存</button> 
+					<a href="{{urlfor "TaskController.List"}}" class="btn">返 回</a>
+				</div> <!-- /form-actions -->
+		</div>
+	</div>
+</div>
+</div>
+
+<script>
+$(function () {
+	$("form").submit(function () {
+		$(".alert").hide();
+		$("button[type='submit']").attr('disabled', true);
+		$.post('{{urlfor "TaskController.Edit"}}', $(this).serialize(), function (out) {
+			if (out.status == 0) {
+				window.location.href = '{{urlfor "TaskController.List"}}';
+			} else {
+				$(".alert").text(out.msg);
+				$(".alert").show();
+				$("button[type='submit']").attr('disabled', false);
+			}
+		}, "json");
+		return false;
+	});
+	$("input[name='notify']").click(function () {
+		if ($(this).val() > 0) {
+			$('.notify_email').removeClass('hide');
+		} else {
+			$('.notify_email').addClass('hide');
+		}
+	});
+});
+</script>

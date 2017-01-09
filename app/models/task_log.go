@@ -53,6 +53,16 @@ func TaskLogGetById(id int) (*TaskLog, error) {
 	return obj, nil
 }
 
+func TaskLogGetByTaskId(taskId int) (*TaskLog, error) {
+	obj := new(TaskLog)
+
+	err := orm.NewOrm().QueryTable(TableName("task_log")).Filter("task_id", taskId).One(obj)
+	if err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
 func TaskLogDelById(id int) error {
 	_, err := orm.NewOrm().QueryTable(TableName("task_log")).Filter("id", id).Delete()
 	return err

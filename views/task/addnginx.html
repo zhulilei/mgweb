@@ -1,0 +1,90 @@
+<div class="row">
+<div class="span12">      		
+	   		
+	<div class="widget ">
+		<div class="widget-header">
+			<i class="icon-plus"></i>
+ 			<h3>添加任务</h3>	
+		</div> <!-- /widget-header -->
+
+		<div class="widget-content">
+		
+		<div class="alert alert-danger hide" role="alert"></div>
+
+		<form id="add-task" action="{{urlfor "TaskController.AddNginx"}}" method="post" class="form-horizontal">
+			<fieldset>
+				<div>{{.taskid}}</div>
+				<div class="control-group">											
+					<label class="control-label" for="task_name">任务名称</label>
+					<div class="controls">
+						<input type="text" name="task_name" class="span6" id="task_name">
+					</div>				
+				</div>
+
+				<div class="control-group">											
+					<label class="control-label" for="server_name">查询域名</label>
+					<div class="controls">
+						<input type="text" name="server_name" class="span6" id="server_name">
+					</div>				
+				</div>
+						
+
+				<div class="control-group">											
+					<label class="control-label" for="host">主机名</label>
+					<div class="controls">
+						<input type="text" name="host" class="span6" id="host">
+					</div>				
+				</div>
+
+
+	
+				<div class="control-group">											
+					<label class="control-label">邮件通知</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input type="radio" value="0" name="notify" checked> 不通知
+						</label>
+						<label class="radio inline">
+							<input type="radio" value="1" name="notify"> 执行失败时通知
+						</label>
+						<label class="radio inline">
+							<input type="radio" value="2" name="notify"> 执行结束时通知
+						</label>
+					</div>	<!-- /controls -->			
+				</div> <!-- /control-group -->
+				
+				<div class="control-group notify_email hide">											
+					<label class="control-label" for="notify_email">通知邮件抄送人</label>
+					<div class="controls">
+						<textarea name="notify_email" class="span6" id="notify_email" rows="6"></textarea>
+						<p class="help-block">每行一个email地址，如果不需要抄送给其他人请留空</p>
+					</div> <!-- /controls -->				
+				</div> <!-- /control-group -->
+		
+				<br />
+				
+					
+				<div class="form-actions">
+				    <button class="button btn btn-success btn-large">哈哈</button>
+					<!--<button type="submit" class="btn btn-primary">保存</button>-->
+					<!--<button type="button" class="btn" onclick="javascript:history.back();">返回</button> -->
+				</div> <!-- /form-actions -->
+			</fieldset>
+		</form>
+
+		</div>
+	</div>
+</div>
+</div>
+
+<script>
+$(function () {
+	$("input[name='notify']").click(function () {
+		if ($(this).val() > 0) {
+			$('.notify_email').removeClass('hide');
+		} else {
+			$('.notify_email').addClass('hide');
+		}
+	});
+});
+</script>
